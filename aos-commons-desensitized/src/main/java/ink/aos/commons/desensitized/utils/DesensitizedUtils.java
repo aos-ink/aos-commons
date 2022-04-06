@@ -27,16 +27,29 @@ public class DesensitizedUtils {
     }
 
     /**
-     * 【身份证号】显示最后四位，其他隐藏。共计18位或者15位，比如：*************1234
+     * 【身份证号】保留前2后3
      *
-     * @param id
+     * @param id 身份证号
      * @return
      */
     public static String idCardNum(String id) {
         if (StringUtils.isBlank(id)) {
             return "";
         }
-        return hide(id, 6, 4);
+        return hide(id, 2, 3);
+    }
+
+    /**
+     * @param id     身份证号
+     * @param before 前面保留位数
+     * @param after  后面保留位数
+     * @return
+     */
+    public static String idCardNum(String id, Integer before, Integer after) {
+        if (StringUtils.isBlank(id)) {
+            return "";
+        }
+        return hide(id, before, after);
     }
 
     /**
@@ -53,7 +66,7 @@ public class DesensitizedUtils {
     }
 
     /**
-     * 【手机号码】前三位，后四位，其他隐藏，比如135******10
+     * 【手机号码】保留前3后4
      *
      * @param num
      * @return
@@ -149,6 +162,7 @@ public class DesensitizedUtils {
     }
 
     public static String hide(String aims, Integer before, Integer after) {
+        if (aims.length() <= before + after) return aims;
         String beforeNum = aims.substring(0, before);
         String afterNum = aims.substring(aims.length() - after);
         return beforeNum + "" + StringUtils.leftPad(afterNum, aims.length() - before, "*");
